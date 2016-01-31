@@ -20,6 +20,20 @@
                ReferencedContainer = "container:Log.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "NO"
+            buildForArchiving = "NO"
+            buildForAnalyzing = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "B972DB2F1C5E136000AE81D7"
+               BuildableName = "LogTests.xctest"
+               BlueprintName = "LogTests"
+               ReferencedContainer = "container:Log.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction

@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90D71495017FA28CD3A6BCAB /* Logger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D71BA1526E58C15B09AA53 /* Logger.swift */; };
+		90D71AED430959C4E0A6131C /* Level.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D71A9FB51EC3F3B94C8653 /* Level.swift */; };
+		90D71F46985120341FAA1C29 /* LoggerTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90D7162C4AFE6B1B7FED858D /* LoggerTest.swift */; };
 		B972DB2A1C5E136000AE81D7 /* Log.h in Headers */ = {isa = PBXBuildFile; fileRef = B972DB291C5E136000AE81D7 /* Log.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		B972DB311C5E136000AE81D7 /* Log.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B972DB261C5E136000AE81D7 /* Log.framework */; };
-		B972DB361C5E136000AE81D7 /* LogTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B972DB351C5E136000AE81D7 /* LogTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,11 +25,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		90D7162C4AFE6B1B7FED858D /* LoggerTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoggerTest.swift; sourceTree = "<group>"; };
+		90D71A9FB51EC3F3B94C8653 /* Level.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Level.swift; sourceTree = "<group>"; };
+		90D71BA1526E58C15B09AA53 /* Logger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Logger.swift; sourceTree = "<group>"; };
 		B972DB261C5E136000AE81D7 /* Log.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Log.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		B972DB291C5E136000AE81D7 /* Log.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Log.h; sourceTree = "<group>"; };
 		B972DB2B1C5E136000AE81D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B972DB301C5E136000AE81D7 /* LogTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LogTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		B972DB351C5E136000AE81D7 /* LogTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogTests.swift; sourceTree = "<group>"; };
 		B972DB371C5E136000AE81D7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -73,6 +77,8 @@
 			children = (
 				B972DB291C5E136000AE81D7 /* Log.h */,
 				B972DB2B1C5E136000AE81D7 /* Info.plist */,
+				90D71BA1526E58C15B09AA53 /* Logger.swift */,
+				90D71A9FB51EC3F3B94C8653 /* Level.swift */,
 			);
 			path = Log;
 			sourceTree = "<group>";
@@ -80,8 +86,8 @@
 		B972DB341C5E136000AE81D7 /* LogTests */ = {
 			isa = PBXGroup;
 			children = (
-				B972DB351C5E136000AE81D7 /* LogTests.swift */,
 				B972DB371C5E136000AE81D7 /* Info.plist */,
+				90D7162C4AFE6B1B7FED858D /* LoggerTest.swift */,
 			);
 			path = LogTests;
 			sourceTree = "<group>";
@@ -194,6 +200,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90D71495017FA28CD3A6BCAB /* Logger.swift in Sources */,
+				90D71AED430959C4E0A6131C /* Level.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -201,7 +209,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B972DB361C5E136000AE81D7 /* LogTests.swift in Sources */,
+				90D71F46985120341FAA1C29 /* LoggerTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -253,7 +261,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -295,7 +303,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -376,6 +384,7 @@
 				B972DB3C1C5E136000AE81D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B972DB3D1C5E136000AE81D7 /* Build configuration list for PBXNativeTarget "LogTests" */ = {
 			isa = XCConfigurationList;
@@ -384,6 +393,7 @@
 				B972DB3F1C5E136000AE81D7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
