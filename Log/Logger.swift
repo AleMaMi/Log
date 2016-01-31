@@ -48,10 +48,7 @@ public class Logger
 
     private convenience init()
     {
-        self.init(withLevel: .ERROR, verboseLevel: .DEBUG)
-        {
-            (outString: String) in NSLog(outString)
-        }
+        self.init(withLevel: .ERROR, verboseLevel: .DEBUG) {outString in NSLog(outString)}
     }
 
     func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
@@ -102,8 +99,17 @@ public class Logger
             let thread: String = NSThread.isMainThread() ? Logger.THREAD_MAIN : Logger.THREAD_OTHER
             let prefix = levelToString(level)
 
-            // TODO: use verbosity to control what is shown - remove unnecessary output, if no vverbose
-            let outputString = "[\(prefix)](\(thread))\(shortFileName)#\(function):\(line) - " + (message != nil ? (message! + ": ") : "") + "\(stringToPrint)"
+            let outputString: String
+            let dbgMessage = message != nil ? (message! + ": ") : ""
+
+            if self.verboseThreshold.rawValue > Level.NONE.rawValue
+            {
+                outputString = "[\(prefix)] (\(thread))\(shortFileName)#\(function):\(line) - \(dbgMessage)\(stringToPrint)"
+            }
+            else
+            {
+                outputString = "[\(prefix)] \(dbgMessage)\(stringToPrint)"
+            }
 
             printer(outputString)
         }
