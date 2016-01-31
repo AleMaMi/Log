@@ -31,31 +31,6 @@ public class Logger
         }
     }
 
-    private func logLevelPrefix(level: Level) -> String
-    {
-        let prefix: String
-
-        switch level
-        {
-            case .DEBUG:
-                prefix = "DBG"
-
-            case .INFO:
-                prefix = "INF"
-
-            case .WARNING:
-                prefix = "WRN"
-
-            case .ERROR:
-                prefix = "ERR"
-
-            default:
-                prefix = "NON"
-        }
-
-        return prefix
-    }
-
     func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         if level.rawValue > Level.NONE.rawValue && level.rawValue >= self.outputTreshold.rawValue
@@ -86,7 +61,7 @@ public class Logger
 
             let shortFileName: String = NSURL(string: file)?.lastPathComponent ?? "no_file"
             let thread: String = NSThread.isMainThread() ? "MT" : "OT"
-            let prefix = logLevelPrefix(level)
+            let prefix = levelToString(level)
 
             let outputString = "[\(prefix)](\(thread))\(shortFileName)#\(function):\(line) - \(stringToPrint)"
 
