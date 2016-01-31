@@ -48,13 +48,15 @@ public class Logger
 
     private convenience init()
     {
-        self.init(withLevel: .ERROR, verboseLevel: .DEBUG)
-        {
-            (outString: String) in NSLog(outString)
-        }
+        self.init(withLevel: .ERROR, verboseLevel: .DEBUG) {outString in NSLog(outString)}
     }
 
     func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    {
+        log(level, nil, object, file, function, line)
+    }
+
+    func log<T>(level: Level, _ message: String?, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         if level.rawValue > Level.NONE.rawValue && level.rawValue <= self.outputThreshold.rawValue
         {
@@ -62,7 +64,9 @@ public class Logger
             let stringToPrint: String
 
             // If verbosity, debugDescription has priority over description
-            if let v = value as? CustomDebugStringConvertible where level.rawValue >= self.verboseThreshold.rawValue
+            if let v = value as? CustomDebugStringConvertible
+            where self.verboseThreshold.rawValue > Level.NONE.rawValue
+                    && level.rawValue >= self.verboseThreshold.rawValue
             {
                 stringToPrint = v.debugDescription
             }
@@ -95,7 +99,17 @@ public class Logger
             let thread: String = NSThread.isMainThread() ? Logger.THREAD_MAIN : Logger.THREAD_OTHER
             let prefix = levelToString(level)
 
-            let outputString = "[\(prefix)](\(thread))\(shortFileName)#\(function):\(line) - \(stringToPrint)"
+            let outputString: String
+            let dbgMessage = message != nil ? (message! + ": ") : ""
+
+            if self.verboseThreshold.rawValue > Level.NONE.rawValue
+            {
+                outputString = "[\(prefix)] (\(thread))\(shortFileName)#\(function):\(line) - \(dbgMessage)\(stringToPrint)"
+            }
+            else
+            {
+                outputString = "[\(prefix)] \(dbgMessage)\(stringToPrint)"
+            }
 
             printer(outputString)
         }
@@ -112,6 +126,17 @@ public class Logger
     }
 
     /**
+     * Log object with ERROR level
+     *
+     * - parameter message: message shown before object
+     * - parameter object: object what will be logged, if required level is ERROR or more
+     */
+    public func error<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    {
+        log(.ERROR, message, object, file, function, line)
+    }
+
+    /**
      * Log object with WARNING level
      *
      * - parameter object: object what will be logged, if required level is WARNING or more
@@ -119,6 +144,17 @@ public class Logger
     public func warning<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.WARNING, object, file, function, line)
+    }
+
+    /**
+     * Log object with WARNING level
+     *
+     * - parameter message: message shown before object
+     * - parameter object: object what will be logged, if required level is WARNING or more
+     */
+    public func warning<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    {
+        log(.WARNING, message, object, file, function, line)
     }
 
     /**
@@ -132,6 +168,17 @@ public class Logger
     }
 
     /**
+     * Log object with INFO level
+     *
+     * - parameter message: message shown before object
+     * - parameter object: object what will be logged, if required level is INFO or more
+     */
+    public func info<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    {
+        log(.INFO, message, object, file, function, line)
+    }
+
+    /**
      * Log object with DEBUG level
      *
      * - parameter object: object what will be logged, if required level is DEBUG or more
@@ -139,5 +186,16 @@ public class Logger
     public func debug<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.DEBUG, object, file, function, line)
+    }
+
+    /**
+     * Log object with DEBUG level
+     *
+     * - parameter message: message shown before object
+     * - parameter object: object what will be logged, if required level is DEBUG or more
+     */
+    public func debug<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    {
+        log(.DEBUG, message, object, file, function, line)
     }
 }

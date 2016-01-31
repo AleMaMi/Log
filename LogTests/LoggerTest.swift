@@ -28,6 +28,7 @@ class LoggerTest: XCTestCase
         static let TESTING_STRING: String = "TESTING STRING"
         static let TESTING_INT: Int = 42
         static let TESTING_ARRAY: [String] = ["A1", "A2", "A3"]
+        static let MESSAGE = "Message"
     }
 
     class ClassWithoutStringRepresentation
@@ -69,7 +70,7 @@ class LoggerTest: XCTestCase
     {
         let fileName = NSURL(string: __FILE__)!.lastPathComponent!
         let lvlStr = levelToString(level)
-        let prefix = "[\(lvlStr)](MT)" + fileName + "#" + funcName + ":"
+        let prefix = "[\(lvlStr)] (MT)" + fileName + "#" + funcName + ":"
         let suffix = " - " + expectedValue
 
         let prefixEscaped = NSRegularExpression.escapedPatternForString(prefix)
@@ -241,6 +242,43 @@ class LoggerTest: XCTestCase
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
+    func testLogDifferentLevelsForDebugWithMessage()
+    {
+        var outString: String? = nil
+
+        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .DEBUG)
+        {
+            (os: String) in
+            outString = os
+        }
+
+        let loggedObject = ClassWithBothDescription()
+
+        outString = nil
+        testedLogger.log(.NONE, Const.MESSAGE, loggedObject)
+        assertThat(outString, `is`(nilValue()))
+
+        outString = nil
+        testedLogger.error(Const.MESSAGE, loggedObject)
+        let expectedPatternError = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternError)))
+
+        outString = nil
+        testedLogger.warning(Const.MESSAGE, loggedObject)
+        let expectedPatternWarning = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .WARNING)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
+
+        outString = nil
+        testedLogger.info(Const.MESSAGE, loggedObject)
+        let expectedPatternInfo = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .INFO)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
+
+        outString = nil
+        testedLogger.debug(Const.MESSAGE, loggedObject)
+        let expectedPatternDebug = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DEBUG_DESC, .DEBUG)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
+    }
+
     func testLogDifferentLevelsForDebugLoweredVerbosityTreshold()
     {
         var outString: String? = nil
@@ -276,6 +314,43 @@ class LoggerTest: XCTestCase
         testedLogger.debug(loggedObject)
         let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .DEBUG)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
+    }
+
+    func testLogDifferentLevelsForDebugNoVerbosity()
+    {
+        var outString: String? = nil
+
+        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .NONE)
+        {
+            (os: String) in
+            outString = os
+        }
+
+        let loggedObject = ClassWithBothDescription()
+
+        outString = nil
+        testedLogger.log(.NONE, Const.MESSAGE, loggedObject)
+        assertThat(outString, `is`(nilValue()))
+
+        outString = nil
+        testedLogger.error(Const.MESSAGE, loggedObject)
+        let expectedPatternError = "[ERR] \(Const.MESSAGE): \(Const.CUST_DESC)"
+        assertThat(outString, presentAnd(equalTo(expectedPatternError)))
+
+        outString = nil
+        testedLogger.warning(Const.MESSAGE, loggedObject)
+        let expectedPatternWarning = "[WRN] \(Const.MESSAGE): \(Const.CUST_DESC)"
+        assertThat(outString, presentAnd(equalTo(expectedPatternWarning)))
+
+        outString = nil
+        testedLogger.info(Const.MESSAGE, loggedObject)
+        let expectedPatternInfo = "[INF] \(Const.MESSAGE): \(Const.CUST_DESC)"
+        assertThat(outString, presentAnd(equalTo(expectedPatternInfo)))
+
+        outString = nil
+        testedLogger.debug(Const.MESSAGE, loggedObject)
+        let expectedPatternDebug = "[DBG] \(Const.MESSAGE): \(Const.CUST_DESC)"
+        assertThat(outString, presentAnd(equalTo(expectedPatternDebug)))
     }
 
     func testGetDefaultLogger()
