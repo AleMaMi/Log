@@ -57,7 +57,7 @@ class LoggerTest: XCTestCase
     private func prepareRegExp(expectedValue: String, funcName: String = __FUNCTION__) -> String
     {
         let fileName = NSURL(string: __FILE__)!.lastPathComponent!
-        let prefix = "[MT]" + fileName + "#" + funcName + ":"
+        let prefix = "[ERR](MT)" + fileName + "#" + funcName + ":"
         let suffix = " - " + expectedValue
 
         let prefixEscaped = NSRegularExpression.escapedPatternForString(prefix)
