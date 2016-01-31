@@ -28,6 +28,7 @@ class LoggerTest: XCTestCase
         static let TESTING_STRING: String = "TESTING STRING"
         static let TESTING_INT: Int = 42
         static let TESTING_ARRAY: [String] = ["A1", "A2", "A3"]
+        static let MESSAGE = "Message"
     }
 
     class ClassWithoutStringRepresentation
@@ -241,6 +242,43 @@ class LoggerTest: XCTestCase
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
+    func testLogDifferentLevelsForDebugWithMessage()
+    {
+        var outString: String? = nil
+
+        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .DEBUG)
+        {
+            (os: String) in
+            outString = os
+        }
+
+        let loggedObject = ClassWithBothDescription()
+
+        outString = nil
+        testedLogger.log(.NONE, Const.MESSAGE, loggedObject)
+        assertThat(outString, `is`(nilValue()))
+
+        outString = nil
+        testedLogger.error(Const.MESSAGE, loggedObject)
+        let expectedPatternError = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternError)))
+
+        outString = nil
+        testedLogger.warning(Const.MESSAGE, loggedObject)
+        let expectedPatternWarning = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .WARNING)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
+
+        outString = nil
+        testedLogger.info(Const.MESSAGE, loggedObject)
+        let expectedPatternInfo = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .INFO)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
+
+        outString = nil
+        testedLogger.debug(Const.MESSAGE, loggedObject)
+        let expectedPatternDebug = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DEBUG_DESC, .DEBUG)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
+    }
+
     func testLogDifferentLevelsForDebugLoweredVerbosityTreshold()
     {
         var outString: String? = nil
@@ -275,6 +313,43 @@ class LoggerTest: XCTestCase
         outString = nil
         testedLogger.debug(loggedObject)
         let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .DEBUG)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
+    }
+
+    func testLogDifferentLevelsForDebugNoVerbosity()
+    {
+        var outString: String? = nil
+
+        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .NONE)
+        {
+            (os: String) in
+            outString = os
+        }
+
+        let loggedObject = ClassWithBothDescription()
+
+        outString = nil
+        testedLogger.log(.NONE, loggedObject)
+        assertThat(outString, `is`(nilValue()))
+
+        outString = nil
+        testedLogger.error(loggedObject)
+        let expectedPatternError = prepareRegExp(Const.CUST_DESC)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternError)))
+
+        outString = nil
+        testedLogger.warning(loggedObject)
+        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .WARNING)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
+
+        outString = nil
+        testedLogger.info(loggedObject)
+        let expectedPatternInfo = prepareRegExp(Const.CUST_DESC, .INFO)
+        assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
+
+        outString = nil
+        testedLogger.debug(loggedObject)
+        let expectedPatternDebug = prepareRegExp(Const.CUST_DESC, .DEBUG)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
