@@ -7,6 +7,10 @@ import Foundation
 
 public class Logger
 {
+    private static let NO_FILE: String = "no_file"
+    private static let THREAD_MAIN: String = "MT"
+    private static let THREAD_OTHER: String = "OT"
+
     public private(set) static var Default: Logger =
     {
         return Logger()
@@ -33,34 +37,43 @@ public class Logger
 
     func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
-        if level.rawValue > Level.NONE.rawValue && level.rawValue >= self.outputTreshold.rawValue
+        if level.rawValue > Level.NONE.rawValue && level.rawValue <= self.outputTreshold.rawValue
         {
             guard let value: T = object() else {return}
             let stringToPrint: String
 
+            // If verbosity, debugDescription has priority over description
             if let v = value as? CustomDebugStringConvertible where level.rawValue >= self.verboseTreshold.rawValue
             {
                 stringToPrint = v.debugDescription
             }
+            // regular description is preffered
             else if let v = value as? CustomStringConvertible
             {
                 stringToPrint = v.description
             }
+            // String implements CustomDebuStringConvertible; TODO: do we want qutotaion marks there? If yes, remove String
             else if let v = value as? String
             {
                 stringToPrint = v
+            }
+            // if there is only debugDesctiption, just use it
+            else if let v = value as? CustomDebugStringConvertible
+            {
+                stringToPrint = v.debugDescription
             }
             else if let c = T.self as? AnyClass
             {
                 stringToPrint = NSStringFromClass(c)
             }
+            // Perhaps never happen
             else
             {
                 return
             }
 
-            let shortFileName: String = NSURL(string: file)?.lastPathComponent ?? "no_file"
-            let thread: String = NSThread.isMainThread() ? "MT" : "OT"
+            let shortFileName: String = NSURL(string: file)?.lastPathComponent ?? Logger.NO_FILE
+            let thread: String = NSThread.isMainThread() ? Logger.THREAD_MAIN : Logger.THREAD_OTHER
             let prefix = levelToString(level)
 
             let outputString = "[\(prefix)](\(thread))\(shortFileName)#\(function):\(line) - \(stringToPrint)"
@@ -69,22 +82,22 @@ public class Logger
         }
     }
 
-    public func error<T>(@autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func error<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.ERROR, object, file, function, line)
     }
 
-    public func warning<T>(@autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func warning<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.WARNING, object, file, function, line)
     }
 
-    public func info<T>(@autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func info<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.INFO, object, file, function, line)
     }
 
-    public func debug<T>(@autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func debug<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.DEBUG, object, file, function, line)
     }

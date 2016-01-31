@@ -227,17 +227,17 @@ class LoggerTest: XCTestCase
 
         outString = nil
         testedLogger.warning(loggedObject)
-        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC)
+        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .WARNING)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
 
         outString = nil
         testedLogger.info(loggedObject)
-        let expectedPatternInfo = prepareRegExp(Const.CUST_DESC)
+        let expectedPatternInfo = prepareRegExp(Const.CUST_DESC, .INFO)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
 
         outString = nil
         testedLogger.debug(loggedObject)
-        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC)
+        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .DEBUG)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
@@ -264,17 +264,17 @@ class LoggerTest: XCTestCase
 
         outString = nil
         testedLogger.warning(loggedObject)
-        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC)
+        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .WARNING)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
 
         outString = nil
         testedLogger.info(loggedObject)
-        let expectedPatternInfo = prepareRegExp(Const.CUST_DEBUG_DESC)
+        let expectedPatternInfo = prepareRegExp(Const.CUST_DEBUG_DESC, .INFO)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
 
         outString = nil
         testedLogger.debug(loggedObject)
-        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC)
+        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .DEBUG)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
