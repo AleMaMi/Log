@@ -1,29 +1,33 @@
-# README #
+# Log #
 
-This README would normally document whatever steps are necessary to get your application up and running.
+Simple logging facility as framework to use during iOS development
 
-### What is this repository for? ###
+### Simple start ###
 
-* Quick summary
-* Version
-* [Learn Markdown](https://bitbucket.org/tutorials/markdowndemo)
+Main utility is Logger class. To use it, you have to create instance. 
 
-### How do I get set up? ###
+```swift
+let myLogger = Logger(withLevel: .ERROR, verboseLevel: .DEBUG) {
+ (outputString: String) in NSLog(outputString)
+}
+```
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+When you have an instance of logger, you can use it
 
-### Contribution guidelines ###
+```swift
+myLogger.error(objectToLog)
+```
 
-* Writing tests
-* Code review
-* Other guidelines
+For your convenience, there is alredy prepared logger with usual setup.
+```swift
+Logger.Default.info(objectToLog)
+```
 
-### Who do I talk to? ###
+### Level and verbose level ###
 
-* Repo owner or admin
-* Other community or team contact
+The `level` parameter defines threshold to limit output. If the logged level is above this
+configured level threshold, the output is not produced, logger just do nothing.
+
+The `verboseLevel` parameter defines threshold to produce more verbose output. At this moment
+the only difference is the `debugDescription` is used prior to `description` if possible. Otherwise
+the regular `description` is used, if present.

@@ -16,14 +16,14 @@ public class Logger
         return Logger()
     }()
 
-    private var outputTreshold: Level
-    private var verboseTreshold: Level
+    private var outputThreshold: Level
+    private var verboseThreshold: Level
     private var printer: (String) -> Void
 
     public init(withLevel level: Level, verboseLevel: Level, printer: (String)->Void)
     {
-        self.outputTreshold = level
-        self.verboseTreshold = verboseLevel
+        self.outputThreshold = level
+        self.verboseThreshold = verboseLevel
         self.printer = printer
     }
 
@@ -37,13 +37,13 @@ public class Logger
 
     func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
-        if level.rawValue > Level.NONE.rawValue && level.rawValue <= self.outputTreshold.rawValue
+        if level.rawValue > Level.NONE.rawValue && level.rawValue <= self.outputThreshold.rawValue
         {
             guard let value: T = object() else {return}
             let stringToPrint: String
 
             // If verbosity, debugDescription has priority over description
-            if let v = value as? CustomDebugStringConvertible where level.rawValue >= self.verboseTreshold.rawValue
+            if let v = value as? CustomDebugStringConvertible where level.rawValue >= self.verboseThreshold.rawValue
             {
                 stringToPrint = v.debugDescription
             }
