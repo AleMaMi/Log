@@ -13,3 +13,28 @@ public enum Level: Int
     case INFO       = 3
     case DEBUG      = 4
 }
+
+public func levelToString(level: Level) -> String
+{
+    let prefix: String
+
+    switch level
+    {
+        case .DEBUG:
+            prefix = "DBG"
+
+        case .INFO:
+            prefix = "INF"
+
+        case .WARNING:
+            prefix = "WRN"
+
+        case .ERROR:
+            prefix = "ERR"
+
+        default:
+            prefix = "NON"
+    }
+
+    return prefix
+}
