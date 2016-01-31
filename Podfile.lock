@@ -1,0 +1,10 @@
+PODS:
+  - SwiftHamcrest (0.3)
+
+DEPENDENCIES:
+  - SwiftHamcrest (~> 0.3)
+
+SPEC CHECKSUMS:
+  SwiftHamcrest: 652d2e197df0957b532f1c66a9112bc809030965
+
+COCOAPODS: 0.39.0

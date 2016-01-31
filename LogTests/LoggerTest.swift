@@ -5,12 +5,17 @@
 
 import XCTest
 @testable import Log
+import Hamcrest
 
 class LoggerTest: XCTestCase
 {
+    private var fileName: String!
+
     override func setUp()
     {
         super.setUp()
+
+        self.fileName = NSURL(string: __FILE__)!.lastPathComponent
     }
 
     override func tearDown()
@@ -20,6 +25,9 @@ class LoggerTest: XCTestCase
 
     func testLogError()
     {
+        let funcName: String = __FUNCTION__
+        let expectedPrefix: String = "[MT]" + self.fileName + "#" + funcName + ":"
+
         var outString: String?
         let testedLogger: Logger = Logger(withLevel: .ERROR, verboseLevel: .DEBUG)
         {
@@ -29,10 +37,11 @@ class LoggerTest: XCTestCase
 
         let loggedObject: Int = 1
         outString = nil
-        testedLogger.debug(loggedObject)
-        let expectedOutput = "[MT]LoggerTest.swift#testLogError():32 - 1"
+        testedLogger.error(loggedObject)
+        let expectedSuffix = "- 1"
 
-        XCTAssertEqual(outString, expectedOutput, "Logged integer")
+        assertThat(outString, presentAnd(hasPrefix(expectedPrefix)))
+        assertThat(outString!, hasSuffix(expectedSuffix))
     }
 
     func testGetDefaultLogger()
@@ -40,6 +49,6 @@ class LoggerTest: XCTestCase
         let logger1: Logger = Logger.Default
         let logger2: Logger = Logger.Default
 
-        XCTAssertTrue(logger1 === logger2, "Both loggers")
+        assertThat(logger1 === logger2)
     }
 }
