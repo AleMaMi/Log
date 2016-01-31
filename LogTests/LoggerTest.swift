@@ -30,7 +30,7 @@ class LoggerTest: XCTestCase
         let loggedObject: Int = 1
         outString = nil
         testedLogger.debug(loggedObject)
-        let expectedOutput = "[MT]LoggerTest.swift#testLogError():32 - 1"
+        let expectedOutput = "[DBG](MT)LoggerTest.swift#testLogError():32 - 1"
 
         XCTAssertEqual(outString, expectedOutput, "Logged integer")
     }
