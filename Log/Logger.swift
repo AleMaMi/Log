@@ -5,12 +5,21 @@
 
 import Foundation
 
+/**
+ * Simple logging utility. Any instance of this class can be used to manage logging.
+ * For now the configurable levels of output are set during initialization, cannot be
+ * changed during run-time.
+ */
 public class Logger
 {
     private static let NO_FILE: String = "no_file"
     private static let THREAD_MAIN: String = "MT"
     private static let THREAD_OTHER: String = "OT"
 
+    /**
+     * Pre-defined Logger instance as singleton, can be shared areound whole appliation.
+     * Has default settings: level is ERROR, verboseLevel is DEBUG and output is NSLog()
+     */
     public private(set) static var Default: Logger =
     {
         return Logger()
@@ -20,6 +29,16 @@ public class Logger
     private var verboseThreshold: Level
     private var printer: (String) -> Void
 
+    /**
+     * Creates an instance of Logger with required levels
+     *
+     * - parameter level: defines threshold for debug output; no output above this threshold;
+     * if it is Level.NONE, no output is produced
+     *
+     * - parameter verboseLevel: define threshold for debugDescription output
+     *
+     * - parameter printer: closure used to send output string outside - to real logger
+     */
     public init(withLevel level: Level, verboseLevel: Level, printer: (String)->Void)
     {
         self.outputThreshold = level
@@ -82,21 +101,41 @@ public class Logger
         }
     }
 
+    /**
+     * Log object with ERROR level
+     *
+     * - parameter object: object what will be logged, if required level is ERROR or more
+     */
     public func error<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.ERROR, object, file, function, line)
     }
 
+    /**
+     * Log object with WARNING level
+     *
+     * - parameter object: object what will be logged, if required level is WARNING or more
+     */
     public func warning<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.WARNING, object, file, function, line)
     }
 
+    /**
+     * Log object with INFO level
+     *
+     * - parameter object: object what will be logged, if required level is INFO or more
+     */
     public func info<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.INFO, object, file, function, line)
     }
 
+    /**
+     * Log object with DEBUG level
+     *
+     * - parameter object: object what will be logged, if required level is DEBUG or more
+     */
     public func debug<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
     {
         log(.DEBUG, object, file, function, line)

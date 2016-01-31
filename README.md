@@ -31,3 +31,6 @@ configured level threshold, the output is not produced, logger just do nothing.
 The `verboseLevel` parameter defines threshold to produce more verbose output. At this moment
 the only difference is the `debugDescription` is used prior to `description` if possible. Otherwise
 the regular `description` is used, if present.
+
+The `printer` closure parameter allow to define how the output string should be shown. This
+could be used to redirect output to any stream, logger facility etc.
