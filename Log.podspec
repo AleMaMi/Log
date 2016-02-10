@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "Log"
-  s.version      = "1.1.1"
+  s.version      = "1.1"
   s.summary      = "Small library for logging"
 
   # This description is used to generate tags and improve search results.
