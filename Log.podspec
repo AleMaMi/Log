@@ -15,7 +15,7 @@ Pod::Spec.new do |s|
   s.platform              = :ios, "9.0"
 
   s.source                = { :git => "ssh://git@ergosphere2.local/volume2/git/Log.git", :tag => "#{s.version}" }
-  s.source_files          = "Log/**/*.swift"
+  s.source_files          = "Log", "Log/**/*.swift"
   s.public_header_files   = "Log/**/*.h"
   s.frameworks            = "Foundation", "XCTest"
 end
