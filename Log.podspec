@@ -17,5 +17,5 @@ Pod::Spec.new do |s|
   s.source                = { :git => "ssh://git@ergosphere2.local/volume2/git/Log.git", :tag => "#{s.version}" }
   s.source_files          = "Log", "Log/**/*.swift"
   s.public_header_files   = "Log/**/*.h"
-  s.frameworks            = "Foundation", "XCTest"
+  s.frameworks            = "Foundation"
 end
