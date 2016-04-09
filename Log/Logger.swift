@@ -48,15 +48,15 @@ public class Logger
 
     private convenience init()
     {
-        self.init(withLevel: .ERROR, verboseLevel: .DEBUG) {outString in NSLog(outString)}
+        self.init(withLevel: .ERROR, verboseLevel: .DEBUG) {outString in NSLog("%@", outString)}
     }
 
-    func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(level, nil, object, file, function, line)
     }
 
-    func log<T>(level: Level, _ message: String?, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    func log<T>(level: Level, _ message: String?, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         if level.rawValue > Level.NONE.rawValue && level.rawValue <= self.outputThreshold.rawValue
         {
@@ -104,7 +104,7 @@ public class Logger
 
             if self.verboseThreshold.rawValue > Level.NONE.rawValue
             {
-                outputString = "[\(prefix)] (\(thread))\(shortFileName)#\(function):\(line) - \(dbgMessage)\(stringToPrint)"
+                outputString = "[\(prefix)] (\(thread)) \(dbgMessage)\(stringToPrint) - \(shortFileName):\(line)"
             }
             else
             {
@@ -120,7 +120,7 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is ERROR or more
      */
-    public func error<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func error<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.ERROR, object, file, function, line)
     }
@@ -131,7 +131,7 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is ERROR or more
      */
-    public func error<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func error<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.ERROR, message, object, file, function, line)
     }
@@ -141,7 +141,7 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is WARNING or more
      */
-    public func warning<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func warning<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.WARNING, object, file, function, line)
     }
@@ -152,7 +152,7 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is WARNING or more
      */
-    public func warning<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func warning<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.WARNING, message, object, file, function, line)
     }
@@ -162,7 +162,7 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is INFO or more
      */
-    public func info<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func info<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.INFO, object, file, function, line)
     }
@@ -173,7 +173,7 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is INFO or more
      */
-    public func info<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func info<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.INFO, message, object, file, function, line)
     }
@@ -183,7 +183,7 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is DEBUG or more
      */
-    public func debug<T>(@autoclosure object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func debug<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.DEBUG, object, file, function, line)
     }
@@ -194,7 +194,7 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is DEBUG or more
      */
-    public func debug<T>(message: String, @autoclosure _ object: () -> T, _ file: String = __FILE__, _ function: String = __FUNCTION__, _ line: Int = __LINE__)
+    public func debug<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(.DEBUG, message, object, file, function, line)
     }
