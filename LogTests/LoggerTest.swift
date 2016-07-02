@@ -66,17 +66,20 @@ class LoggerTest: XCTestCase
 
     }
 
-    private func prepareRegExp(expectedValue: String, _ level: Level = .ERROR, funcName: String = __FUNCTION__) -> String
+    private func prepareRegExp(expectedValue: String, _ level: Level = .ERROR, funcName: String = #function) -> String
     {
-        let fileName = NSURL(string: __FILE__)!.lastPathComponent!
+        let fileName = NSURL(string: #file)!.lastPathComponent!
         let lvlStr = levelToString(level)
-        let prefix = "[\(lvlStr)] (MT)" + fileName + "#" + funcName + ":"
-        let suffix = " - " + expectedValue
+        let prefix = "[\(lvlStr)] (MT) \(expectedValue) - \(fileName):"
 
         let prefixEscaped = NSRegularExpression.escapedPatternForString(prefix)
-        let suffixEscaped = NSRegularExpression.escapedPatternForString(suffix)
 
-        return "^" + prefixEscaped + "\\d+" + suffixEscaped + "$"
+        return "^" + prefixEscaped + "\\d+" + "$"
+    }
+
+    func testStackOverflowForDefaultPrinter()
+    {
+        Logger.Default.error("%s")
     }
 
     func testLogErrorWithDifferentTypes()
