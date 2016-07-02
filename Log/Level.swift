@@ -10,33 +10,33 @@ import Foundation
  */
 public enum Level: Int
 {
-    case NONE       = 0     // This level has no output at all, can be used to disable all outputs
-    case ERROR      = 1
-    case WARNING    = 2
-    case INFO       = 3
-    case DEBUG      = 4
+    case none       = 0     // This level has no output at all, can be used to disable all outputs
+    case error      = 1
+    case warning    = 2
+    case info       = 3
+    case debug      = 4
 }
 
 /**
  * Helps to convert level enum into short string, usually used as
  * prefix of the logged output
  */
-public func levelToString(level: Level) -> String
+public func levelToString(_ level: Level) -> String
 {
     let prefix: String
 
     switch level
     {
-        case .DEBUG:
+        case .debug:
             prefix = "DBG"
 
-        case .INFO:
+        case .info:
             prefix = "INF"
 
-        case .WARNING:
+        case .warning:
             prefix = "WRN"
 
-        case .ERROR:
+        case .error:
             prefix = "ERR"
 
         default:

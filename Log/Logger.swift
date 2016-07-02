@@ -48,24 +48,24 @@ public class Logger
 
     private convenience init()
     {
-        self.init(withLevel: .ERROR, verboseLevel: .DEBUG) {outString in NSLog("%@", outString)}
+        self.init(withLevel: .error, verboseLevel: .debug) {outString in NSLog("%@", outString)}
     }
 
-    func log<T>(level: Level, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    func log<T>(_ level: Level, _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
         log(level, nil, object, file, function, line)
     }
 
-    func log<T>(level: Level, _ message: String?, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    func log<T>(_ level: Level, _ message: String?, @autoclosure _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        if level.rawValue > Level.NONE.rawValue && level.rawValue <= self.outputThreshold.rawValue
+        if level.rawValue > Level.none.rawValue && level.rawValue <= self.outputThreshold.rawValue
         {
             guard let value: T = object() else {return}
             let stringToPrint: String
 
             // If verbosity, debugDescription has priority over description
             if let v = value as? CustomDebugStringConvertible
-            where self.verboseThreshold.rawValue > Level.NONE.rawValue
+            where self.verboseThreshold.rawValue > Level.none.rawValue
                     && level.rawValue >= self.verboseThreshold.rawValue
             {
                 stringToPrint = v.debugDescription
@@ -95,14 +95,14 @@ public class Logger
                 return
             }
 
-            let shortFileName: String = NSURL(string: file)?.lastPathComponent ?? Logger.NO_FILE
-            let thread: String = NSThread.isMainThread() ? Logger.THREAD_MAIN : Logger.THREAD_OTHER
+            let shortFileName: String = URL(string: file)?.lastPathComponent ?? Logger.NO_FILE
+            let thread: String = Thread.isMainThread() ? Logger.THREAD_MAIN : Logger.THREAD_OTHER
             let prefix = levelToString(level)
 
             let outputString: String
             let dbgMessage = message != nil ? (message! + ": ") : ""
 
-            if self.verboseThreshold.rawValue > Level.NONE.rawValue
+            if self.verboseThreshold.rawValue > Level.none.rawValue
             {
                 outputString = "[\(prefix)] (\(thread)) \(dbgMessage)\(stringToPrint) - \(shortFileName):\(line)"
             }
@@ -120,9 +120,9 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is ERROR or more
      */
-    public func error<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func error<T>( _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.ERROR, object, file, function, line)
+        log(.error, object, file, function, line)
     }
 
     /**
@@ -131,9 +131,9 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is ERROR or more
      */
-    public func error<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func error<T>(_ message: String, _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.ERROR, message, object, file, function, line)
+        log(.error, message, object, file, function, line)
     }
 
     /**
@@ -141,9 +141,9 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is WARNING or more
      */
-    public func warning<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func warning<T>( _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.WARNING, object, file, function, line)
+        log(.warning, object, file, function, line)
     }
 
     /**
@@ -152,9 +152,9 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is WARNING or more
      */
-    public func warning<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func warning<T>(_ message: String, _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.WARNING, message, object, file, function, line)
+        log(.warning, message, object, file, function, line)
     }
 
     /**
@@ -162,9 +162,9 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is INFO or more
      */
-    public func info<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func info<T>( _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.INFO, object, file, function, line)
+        log(.info, object, file, function, line)
     }
 
     /**
@@ -173,9 +173,9 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is INFO or more
      */
-    public func info<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func info<T>(_ message: String, _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.INFO, message, object, file, function, line)
+        log(.info, message, object, file, function, line)
     }
 
     /**
@@ -183,9 +183,9 @@ public class Logger
      *
      * - parameter object: object what will be logged, if required level is DEBUG or more
      */
-    public func debug<T>(@autoclosure object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func debug<T>( _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.DEBUG, object, file, function, line)
+        log(.debug, object, file, function, line)
     }
 
     /**
@@ -194,8 +194,8 @@ public class Logger
      * - parameter message: message shown before object
      * - parameter object: object what will be logged, if required level is DEBUG or more
      */
-    public func debug<T>(message: String, @autoclosure _ object: () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
+    public func debug<T>(_ message: String, _ object: @autoclosure () -> T, _ file: String = #file, _ function: String = #function, _ line: Int = #line)
     {
-        log(.DEBUG, message, object, file, function, line)
+        log(.debug, message, object, file, function, line)
     }
 }
