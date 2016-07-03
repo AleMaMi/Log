@@ -66,13 +66,13 @@ class LoggerTest: XCTestCase
 
     }
 
-    private func prepareRegExp(expectedValue: String, _ level: Level = .ERROR, funcName: String = #function) -> String
+    private func prepareRegExp(_ expectedValue: String, _ level: Level = .error, funcName: String = #function) -> String
     {
-        let fileName = NSURL(string: #file)!.lastPathComponent!
+        let fileName = URL(string: #file)!.lastPathComponent!
         let lvlStr = levelToString(level)
         let prefix = "[\(lvlStr)] (MT) \(expectedValue) - \(fileName):"
 
-        let prefixEscaped = NSRegularExpression.escapedPatternForString(prefix)
+        let prefixEscaped = RegularExpression.escapedPattern(for: prefix)
 
         return "^" + prefixEscaped + "\\d+" + "$"
     }
@@ -85,7 +85,7 @@ class LoggerTest: XCTestCase
     func testLogErrorWithDifferentTypes()
     {
         var outString: String? = nil
-        let testedLogger: Logger = Logger(withLevel: .ERROR, verboseLevel: .DEBUG)
+        let testedLogger: Logger = Logger(withLevel: .error, verboseLevel: .debug)
         {
             (os: String) in
             outString = os
@@ -145,7 +145,7 @@ class LoggerTest: XCTestCase
     {
         var outString: String? = nil
 
-        let testedLogger = Logger(withLevel: .NONE, verboseLevel: .DEBUG)
+        let testedLogger = Logger(withLevel: .none, verboseLevel: .debug)
         {
             (os: String) in
             outString = os
@@ -154,7 +154,7 @@ class LoggerTest: XCTestCase
         let loggedObject = ClassWithBothDescription()
 
         outString = nil
-        testedLogger.log(.NONE, loggedObject)
+        testedLogger.log(.none, loggedObject)
         assertThat(outString, `is`(nilValue()))
 
         outString = nil
@@ -178,7 +178,7 @@ class LoggerTest: XCTestCase
     {
         var outString: String? = nil
 
-        let testedLogger = Logger(withLevel: .ERROR, verboseLevel: .DEBUG)
+        let testedLogger = Logger(withLevel: .error, verboseLevel: .debug)
         {
             (os: String) in
             outString = os
@@ -187,7 +187,7 @@ class LoggerTest: XCTestCase
         let loggedObject = ClassWithBothDescription()
 
         outString = nil
-        testedLogger.log(.NONE, loggedObject)
+        testedLogger.log(.none, loggedObject)
         assertThat(outString, `is`(nilValue()))
 
         outString = nil
@@ -212,7 +212,7 @@ class LoggerTest: XCTestCase
     {
         var outString: String? = nil
 
-        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .DEBUG)
+        let testedLogger = Logger(withLevel: .debug, verboseLevel: .debug)
         {
             (os: String) in
             outString = os
@@ -221,7 +221,7 @@ class LoggerTest: XCTestCase
         let loggedObject = ClassWithBothDescription()
 
         outString = nil
-        testedLogger.log(.NONE, loggedObject)
+        testedLogger.log(.none, loggedObject)
         assertThat(outString, `is`(nilValue()))
 
         outString = nil
@@ -231,17 +231,17 @@ class LoggerTest: XCTestCase
 
         outString = nil
         testedLogger.warning(loggedObject)
-        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .WARNING)
+        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .warning)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
 
         outString = nil
         testedLogger.info(loggedObject)
-        let expectedPatternInfo = prepareRegExp(Const.CUST_DESC, .INFO)
+        let expectedPatternInfo = prepareRegExp(Const.CUST_DESC, .info)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
 
         outString = nil
         testedLogger.debug(loggedObject)
-        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .DEBUG)
+        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .debug)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
@@ -249,7 +249,7 @@ class LoggerTest: XCTestCase
     {
         var outString: String? = nil
 
-        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .DEBUG)
+        let testedLogger = Logger(withLevel: .debug, verboseLevel: .debug)
         {
             (os: String) in
             outString = os
@@ -258,7 +258,7 @@ class LoggerTest: XCTestCase
         let loggedObject = ClassWithBothDescription()
 
         outString = nil
-        testedLogger.log(.NONE, Const.MESSAGE, loggedObject)
+        testedLogger.log(.none, Const.MESSAGE, loggedObject)
         assertThat(outString, `is`(nilValue()))
 
         outString = nil
@@ -268,17 +268,17 @@ class LoggerTest: XCTestCase
 
         outString = nil
         testedLogger.warning(Const.MESSAGE, loggedObject)
-        let expectedPatternWarning = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .WARNING)
+        let expectedPatternWarning = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .warning)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
 
         outString = nil
         testedLogger.info(Const.MESSAGE, loggedObject)
-        let expectedPatternInfo = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .INFO)
+        let expectedPatternInfo = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DESC, .info)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
 
         outString = nil
         testedLogger.debug(Const.MESSAGE, loggedObject)
-        let expectedPatternDebug = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DEBUG_DESC, .DEBUG)
+        let expectedPatternDebug = prepareRegExp(Const.MESSAGE + ": " + Const.CUST_DEBUG_DESC, .debug)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
@@ -286,7 +286,7 @@ class LoggerTest: XCTestCase
     {
         var outString: String? = nil
 
-        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .INFO)
+        let testedLogger = Logger(withLevel: .debug, verboseLevel: .info)
         {
             (os: String) in
             outString = os
@@ -295,7 +295,7 @@ class LoggerTest: XCTestCase
         let loggedObject = ClassWithBothDescription()
 
         outString = nil
-        testedLogger.log(.NONE, loggedObject)
+        testedLogger.log(.none, loggedObject)
         assertThat(outString, `is`(nilValue()))
 
         outString = nil
@@ -305,17 +305,17 @@ class LoggerTest: XCTestCase
 
         outString = nil
         testedLogger.warning(loggedObject)
-        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .WARNING)
+        let expectedPatternWarning = prepareRegExp(Const.CUST_DESC, .warning)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternWarning)))
 
         outString = nil
         testedLogger.info(loggedObject)
-        let expectedPatternInfo = prepareRegExp(Const.CUST_DEBUG_DESC, .INFO)
+        let expectedPatternInfo = prepareRegExp(Const.CUST_DEBUG_DESC, .info)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternInfo)))
 
         outString = nil
         testedLogger.debug(loggedObject)
-        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .DEBUG)
+        let expectedPatternDebug = prepareRegExp(Const.CUST_DEBUG_DESC, .debug)
         assertThat(outString, presentAnd(matchesPattern(expectedPatternDebug)))
     }
 
@@ -323,7 +323,7 @@ class LoggerTest: XCTestCase
     {
         var outString: String? = nil
 
-        let testedLogger = Logger(withLevel: .DEBUG, verboseLevel: .NONE)
+        let testedLogger = Logger(withLevel: .debug, verboseLevel: .none)
         {
             (os: String) in
             outString = os
@@ -332,7 +332,7 @@ class LoggerTest: XCTestCase
         let loggedObject = ClassWithBothDescription()
 
         outString = nil
-        testedLogger.log(.NONE, Const.MESSAGE, loggedObject)
+        testedLogger.log(.none, Const.MESSAGE, loggedObject)
         assertThat(outString, `is`(nilValue()))
 
         outString = nil
